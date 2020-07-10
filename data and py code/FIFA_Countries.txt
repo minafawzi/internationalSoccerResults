@@ -1,0 +1,55 @@
+ALB	Albania
+AND	Andorra
+ARM	Armenia
+AUT	Austria
+AZE	Azerbaijan
+BLR	Belarus
+BEL	Belgium
+BIH	Bosnia and Herzegovina
+BUL	Bulgaria
+CRO	Croatia
+CYP	Cyprus
+CZE	Czech Republic
+DEN	Denmark
+ENG	England
+EST	Estonia
+FRO	Faroe Islands
+FIN	Finland
+FRA	France
+GEO	Georgia
+GER	Germany
+GIB	Gibraltar
+GRE	Greece
+HUN	Hungary
+ISL	Iceland
+ISR	Israel
+ITA	Italy
+KAZ	Kazakhstan
+KVX	Kosovo
+LVA	Latvia
+LIE	Liechtenstein
+LTU	Lithuania
+LUX	Luxembourg
+MLT	Malta
+MDA	Moldova
+MNE	Montenegro
+NED	Netherlands
+MKD	North Macedonia
+NIR	Northern Ireland
+NOR	Norway
+POL	Poland
+POR	Portugal
+IRL	Republic of Ireland
+ROU	Romania
+RUS	Russia
+SMR	San Marino
+SCO	Scotland
+SRB	Serbia
+SVK	Slovakia
+SVN	Slovenia
+ESP	Spain
+SWE	Sweden
+SUI	Switzerland
+TUR	Turkey
+UKR	Ukraine
+WAL	Wales
