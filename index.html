@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>FIFA Historical Analysis</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/simple-sidebar.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading"> <b>Menu</b> </div>
+      <div class="list-group list-group-flush">
+        <a href="#" class="list-group-item list-group-item-primary">Home</a>
+        <a href="intro.html" class="list-group-item list-group-item-action bg-light">Game facts</a>
+        <a href="history.html" class="list-group-item list-group-item-action bg-light">History of the game</a>
+        <a href="analysis.html" class="list-group-item list-group-item-action bg-light">Regional analysis </a>
+        <a href="compare.html" class="list-group-item list-group-item-action bg-light">Team comparison </a>
+        <a href="conclusion.html" class="list-group-item list-group-item-action bg-light">Conclusion</a>
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <br>
+                <p>
+                <a href="intro.html">
+                <img src="images/ball.png" alt="soccer ball" style="display: block; margin-left: auto; margin-right: auto;" height="200" width="200"/>
+                </a>
+                </p>
+                <p ><h4 style="text-align: center;">Click on the image to start</h4></p>
+
+                <br>
+                <div id="text-area" style="display:block ;margin: auto;">
+                    <p style="text-align: center;">This projects aims to provide brief analysis on the historical match results of FIFA games available <a href="https://www.kaggle.com/martj42/international-football-results-from-1872-to-2017">here</a> 
+                        <br> The analysis go through some evolving trends through the history of the game, focus on a regional comparison between European and Latin American stlye of play
+                        and comparison between the different major teams through the years.
+                    <br><br>
+                    Enjoy !!!
+                </p>
+                        
+                    
+                </div>
+                <br>
+            </div>      
+       </div> <!-- class container-fluid-->
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-timer.v1.min.js"></script>
+  <script src="vendor/d3.min.js"></script>
+  <script src="scroller.js"></script>
+  <script src="main.js"></script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>FIFA Historical Analysis</title>
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="css/simple-sidebar.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawCharts);
+
+         /*
+        This functions draws all the chart by calling the drawChart function with the different arguments
+        */
+
+        function drawCharts() {
+            
+            drawChart('updatedData3', 'SELECT P, AVG(N) GROUP BY P', avgScorePerGameHandler);                  // for the line chart
+            drawChart('finalData7', "SELECT A, SUM(I) +SUM(J) GROUP BY A ORDER BY SUM(I) +SUM(J) DESC limit 15 label SUM(I) + SUM(J) 'games'", gamesPerTeamHandler);
+            drawChart('queryResults',"SELECT  A,B,C,D,E,F,G",totalGamesPerYearHandler)
+            
+        } // end of drawCharts
+
+        // logging error 
+        function checkError(response)
+        {
+            if(response.isError())
+            {
+                console.log('Error in quere:' + response.getMessage());
+                }
+        }
+        /* 
+        This is the draw chart function that capture the query and the sheet name of the online excel file and execute the query to pass the result to response handler which will 
+        draw the chart
+        */
+        function drawChart(sheetName, query, responseHandler) {
+            var queryString = encodeURIComponent(query);
+            var query = new google.visualization.Query(
+                'https://docs.google.com/spreadsheets/d/1cV3eel1FB1uuliZBSSLa4sNJRggdejBdPoeAjD3QKxg/gviz/tq?sheet='
+                        + sheetName + '&headers=1&tq=' + queryString); //Query
+            query.send(responseHandler);
+        } 
+
+          // this function is to draw the geochart to visualize the FIFA members geographically
+        function avgScorePerGameHandler(response) {
+            var data = response.getDataTable();
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+            var options = {
+            title: '',
+            //width = 700,
+            //height = 350,
+            curveType: 'function',
+            legend: { position: 'left' }
+                };
+            chart.draw(data, options);
+        } //ScorePerGame
+
+        
+          // this function is to draw the geochart to visualize the FIFA members geographically
+        function gamesPerTeamHandler(response) {
+            var data = response.getDataTable();
+            var chart = new google.visualization.ColumnChart(document.getElementById('column_chart'));
+            var options = {
+            //title: '',
+            //width = 700,
+            //height = 350,
+            //curveType: 'function',
+            legend: { position: 'left' }
+               };
+            chart.draw(data, options);
+        } //ScorePerGam
+
+        function totalGamesPerYearHandler(response) {
+            var data = response.getDataTable();
+            //data.setProperty(0, 0, 'style', 'width:200px');
+            var chart = new google.visualization.ColumnChart(document.getElementById('column_chart2'));
+            var options = {
+            isStacked: true,
+              legend: { position: 'right' },
+              hAxis:{
+                format:'####'}
+               };
+            chart.draw(data, options);
+        } //Total Games per year per continent
+        
+
+  </script>
+
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading"> <b>Menu</b> </div>
+      <div class="list-group list-group-flush">
+        <a href="index.html" class="list-group-item list-group-item-action bg-light">Home</a>
+        <a href="intro.html" class="list-group-item list-group-item-action bg-light">Game facts</a>
+        <a href="history.html" class="list-group-item list-group-item-primary">History of the game</a>
+        <a href="analysis.html" class="list-group-item list-group-item-action bg-light">Regional analysis </a>
+        <a href="compare.html" class="list-group-item list-group-item-action bg-light">Team comparison </a>
+        <a href="conclusion.html" class="list-group-item list-group-item-action bg-light">Conclusion</a>
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <!--Second table for the first D3 animation coded in main.js-->
+            
+            <br>
+            <table>
+                <tr>
+                  <h5 style="background-color:rgb(234, 242, 247); text-align: center;"> Top scoring teams over the years <br> </h5>
+                </tr>
+            </table>  
+            <table id="chartsTable" style="margin-left: 100; ">  
+ 
+                <tr>
+                    <td> 
+                        <div class="row"> <h1 style="font-size:1vw"> &emsp; &emsp;</h1> 
+                        </div>
+                    </td>
+                    <td>
+                        <div id="chart-area"></div>  
+                    </td>
+                    <td>
+                        <div class="col-md-12">
+                        <h1 style="font-size:2vw ; text-align:left; color: rgb(0, 162, 255);"><b><span class="counter4"></span></b></h1>
+                            Going through the goals scored by different teams over the years, we can spot some interesting trends:<br>
+                            <ul>
+                                <li>Hungary used to be one of the key teams but due to politics and cold war the team performance declined. 
+                                    More information about the impact of war and politcis on the football in Hungary click 
+                                    <a href="http://outsideoftheboot.com/2014/08/02/the-curious-case-of-hungarian-football/">here</a>  </li>
+                                <li>Germany managed to regain its position after the war after being baned until 1950</li>
+                                <li>While the number of games played in the first 60 years was significantly less that the games played
+                                    in the later years, the number of scored goals are relatively the same.
+                            </ul> 
+                        </div>
+                    </td>
+                    <td>
+                    <br>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <br>
+                        <button id="play-button" style="align-self: center;" class="btn btn-primary" onclick="myfunction()">replay</button>
+                            <script>
+                                function myfunction()
+                                    {
+                                        window.location.reload(false);
+                                    }
+                            </script>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+              </table>
+              <br>
+              <br>
+              <table>
+                  <tr>
+                    <h5 style="background-color:rgb(234, 242, 247); text-align: center;"> Trend of scoring less goals per game <br> </h5>
+                  </tr>
+              </table>            
+              <table>
+              <tr>
+                <td> 
+                  <div class="row"> <h1 style="font-size:1vw"> &emsp; &emsp;</h1> </div>
+                </td>
+                <td>
+                    <div id="curve_chart" style="display:block ;margin: auto; width: 900px;">      
+                    </div>  
+                </td>
+                <td>
+                  <div class="col-md-12">
+                    <h1 style="font-size:2vw ; text-align:left; color: rgb(0, 162, 255);"><b><span class="counter4"></span></b></h1>
+                        In the early days of the game there were less developed defense techniques and loose regulations in the field.
+                        This is reflected in the higher number of goals scored per games in the early decades and started to decrease
+                        over the years.
+                        <br>
+                  </div>
+                </td>
+                <td></td>
+              </tr>
+            </table>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <table>
+                <tr>
+                  <h5 style="background-color:rgb(234, 242, 247); text-align: center;"> Total number of games<br> </h5>
+                </tr>
+            </table>   
+            <br>
+            <br>
+            <table>
+            <tr>
+              <td> 
+                <div class="row"> <h1 style="font-size:1vw"> &emsp; &emsp;</h1> </div>
+              </td>
+              <td>
+                  <div id="column_chart" style="display:block ;margin: auto; width: 900px;">      
+                  </div>  
+              </td>
+              <td>
+                <div class="col-md-12">
+                  <h1 style="font-size:2vw ; text-align:left; color: rgb(0, 162, 255);"><b><span class="counter4"></span></b></h1>
+                      Germany tops the national teams in the total number of games played, also the top teams are dominated by European or South American teams.
+                      <br>
+                </div>
+              </td>
+              <td>
+
+              </td>
+            </tr>
+          </table>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <table>
+            <tr>
+              <h5 style="background-color:rgb(234, 242, 247); text-align: center;"> Continous increase in the number of games<br> </h5>
+            </tr>
+           </table> 
+           <table>
+              <tr>
+                <td> 
+                  <div class="row"> <h1 style="font-size:1vw"> &emsp; &emsp;</h1> </div>
+                </td>
+                <td>
+                    <div id="column_chart2" style="display:block ;margin: auto; width: 900px;">      
+                    </div>  
+                </td>
+                <td>
+                  <div class="col-md-12">
+                    <h1 style="font-size:2vw ; text-align:left; color: rgb(0, 162, 255);"><b><span class="counter4"></span></b></h1>
+                        With the exception of the 1940s, where the second world war took place, the number of games are rapidly increasing over the year.
+                        This is due to the increasing popularity of the game in Asia and North America and also increase in the friendly games 
+                        as well as the introduction of new regional tournments.
+                        <br>
+                  </div>
+                </td>
+                <td>
+                </td>
+              </tr>
+            </table>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+      </div>      
+
+
+      </div> <!-- class container-fluid-->
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://d3js.org/d3-timer.v1.min.js"></script>
+  <script src="racingBars.js"></script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>FIFA Historical Analysis</title>
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="css/simple-sidebar.css" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawCharts);
+
+         /*
+        This functions draws all the chart by calling the drawChart function with the different arguments
+        */
+
+        function drawCharts() {
+            
+            drawChart('fifamembers', 'SELECT B,C,D', fifaMembersGeoHandler);                  // for the GDP Geo Chart at the end 
+
+        } // end of drawCharts
+
+        // logging error 
+        function checkError(response)
+        {
+            if(response.isError())
+            {
+                console.log('Error in quere:' + response.getMessage());
+                }
+        }
+        /* 
+        This is the draw chart function that capture the query and the sheet name of the online excel file and execute the query to pass the result to response handler which will 
+        draw the chart
+        */
+        function drawChart(sheetName, query, responseHandler) {
+            var queryString = encodeURIComponent(query);
+            var query = new google.visualization.Query(
+                'https://docs.google.com/spreadsheets/d/1cV3eel1FB1uuliZBSSLa4sNJRggdejBdPoeAjD3QKxg/gviz/tq?sheet='
+                //'https://docs.google.com/spreadsheets/d/1tI-h3FuYt50XkzEfAjkmIpLmvpfkj5-ca8KsV56ep78/gviz/tq?sheet='
+                        + sheetName + '&headers=1&tq=' + queryString); //Query
+            query.send(responseHandler);
+        } 
+
+          // this function is to draw the geochart to visualize the FIFA members geographically
+        function fifaMembersGeoHandler(response) {
+            var data = response.getDataTable();
+            var chart = new google.visualization.GeoChart(document.getElementById('membersGeo'));
+            var options = {
+            //width: 750, height: 500,
+            //sizeAxis: { minValue: 0, maxValue: 100 },
+            colorAxis: {colors: ['#A8ACAD','#055366','#7CA2AC','#5399AB','#0D88A7', '#033542']} // orange to blue
+            };
+            chart.draw(data, options);
+        } //fifamemberGeoHandler
+
+  </script>
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading"> <b>Menu</b> </div>
+      <div class="list-group list-group-flush">
+        <a href="index.html" class="list-group-item list-group-item-action bg-light">Home</a>
+        <a href="#" class="list-group-item list-group-item-primary">Game facts</a>
+        <a href="history.html" class="list-group-item list-group-item-action bg-light">History of the game</a>
+        <a href="analysis.html" class="list-group-item list-group-item-action bg-light">Regional analysis </a>
+        <a href="compare.html" class="list-group-item list-group-item-action bg-light">Team comparison </a>
+        <a href="conclusion.html" class="list-group-item list-group-item-action bg-light">Conclusion</a>
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <br>
+            <br>
+           
+            <!-- First table for the facts and simple special effects for counters using jQuery in the main.js--> 
+            <table id="factsTable" style="margin-left: auto; margin-right: auto;">
+              <tr>
+                <td>
+                  <h1 style="font-size:2vw ; text-align:right; color: rgb(0, 162, 255);"><b><span class="counter1">3</span>.5 </b></h1>
+                </td>
+                <td>
+                  <h4 style="font-size:1vw"> &emsp; &emsp;</h1>  
+                </td>
+                <td>
+                  <h4 style="font-size:1.5vw; text-align:left;">  Billions worldwide viewers of the FIFA World Cup final in 2018</h1>  
+                </td>
+              </tr>
+              <tr><td><br></td></tr>
+              <tr>
+              <td>
+                <h1 style="font-size:2vw ; text-align:right; color: rgb(0, 162, 255);"><b><span class="counter2">250</span></b></h1>
+              </td>
+              <td>
+                <h4 style="font-size:1vw"> &emsp; &emsp;</h1>  
+              </td>
+              <td>
+                <h4 style="font-size:1.5vw; text-align:left;">  Million registered soccer players in all leagues and confedrations</h1>  
+              </td>
+              </tr>
+              <tr><td><br></td></tr>
+              <tr>
+              <td>
+                <h1 style="font-size:2vw ; text-align:right; color: rgb(0, 162, 255);"><b><span class="counter3">116</span> </b></h1>
+              </td>
+              <td>
+                <h4 style="font-size:1vw"> &emsp; &emsp;</h1>  
+              </td>
+              <td>
+                <h4 style="font-size:1.5vw; text-align:left;">  Years since the foundation of the FIFA in 1904 </h1>  
+              </td>
+            </tr>
+          </table>
+
+        </div> <!--col-md-->
+      </div><!--row -->
+
+      <div class="row">
+        <div class="col-md-12">           
+            <!--Second table for the first D3 animation coded in main.js-->
+            <table id="chartsTable" style="margin-left: 100; ">  
+              <tr>
+                <td> 
+                  <div class="row"> <h1 style="font-size:1vw"> &emsp; &emsp;</h1> </div>
+                </td>
+                <td>
+                  <div id="chart-area" style="display:block ;margin: auto;"></div>  
+                </td>
+                <td>
+                </td>
+                  <div class="row"> <h1 style="font-size:1vw"> &emsp; &emsp;</h1> </div>
+                <td>
+                  <div class="col-md-12">
+                    <h1 style="font-size:2vw ; text-align:left; color: rgb(0, 162, 255);"><b><span class="counter4">211</span></b></h1>
+                        Members in FIFA which is more than the 195 member states in  the united nations. <br>
+                        This is due to two more reasons, the first reason is the fact that FIFA 
+                        used to allow dependent territories to apply for membership and become a member (i.e. Anguilla (UK), Aruba (Netherlands) and Bermuda (UK)). The second reason is 
+                        that FIFA does not recognize Great Britan as one country like Olympic committee but it recognizes England, Wales, Scotland and Northern Ireland as indivdiual memebers. 
+                        <br>
+                  </div>
+                </td>
+                <td>
+                  <br>
+                </td>
+              </tr>
+            </table>
+        </div>
+      </div>
+ 
+      <div class="row" id="geoAnalysis">
+        <div class="col-md-12">
+          <table id="chartsTable" style="margin-left: 100; "> 
+            <p><br><br></p>
+            <br>
+              <table id="geoTable" style="margin-left: 100; ">  
+              <tr>
+                <td> 
+                  <div class="row"> <h1 style="font-size:1vw"> &emsp; &emsp;</h1> </div>
+                </td>
+                <td>
+                  <div id="membersGeo" style="width: 800px; height: 600px;"></div>
+                </td>
+              <td>
+              <div class="row"> <h1 style="font-size:1vw"> &emsp; &emsp;&emsp; &emsp;&emsp; &emsp;</h1> </div>
+              </td>  
+                <td>
+                  <div class="col-md-12">
+                    <h1 style="font-size:2vw ; text-align:left; color: rgb(0, 162, 255);"><b><span class="counter5">6</span></b></h1>
+                        Regional confederations divided as follows: <br>
+                        <ol>
+                          <li>AFC in Asia [46 members]</li>
+                          <li>CAF in Africa [54 members]</li>
+                          <li>CONCACAF in North and Central America and the Caribbean [35 members]</li>
+                          <li>CONMEBOL in South America [10 members]</li>
+                          <li>UEFA in Europe [55 members)</li>
+                          <li>OFC in Oceania [6 members]</li>
+                        </ol> 
+                  </div>
+                </td>
+                <td>
+                  <br>
+
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </td>
+              </tr>
+            </table>
+        </div>
+      </div>
+
+
+      </div> <!-- class container-fluid-->
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-timer.v1.min.js"></script>
+  <script src="vendor/d3.min.js"></script>
+  <script src="scroller.js"></script>
+  <script src="main.js"></script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+
+</body>
+
+</html>

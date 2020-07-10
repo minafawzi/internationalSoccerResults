@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>FIFA Historical Analysis</title>
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="css/simple-sidebar.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawCharts);
+
+         /*
+        This functions draws all the chart by calling the drawChart function with the different arguments
+        */
+
+        function drawCharts() {
+            
+            // line chart for both EU and Latam teams on the total score per game
+            drawChart('queryResults',"SELECT  Z,AB,AD",keyTournmentScoreHandler);
+
+            // Avg scored goals by both EU and Latam team when plays home and away to analyze attacking power
+            drawChart('queryResults',"SELECT  I,J,N",avgScoreComparisonHandler1);
+            drawChart('queryResults',"SELECT  I,L,P",avgScoreComparisonHandler2);
+
+            // Avg received goals by both EU and Latam teams when plas home and away to analyze defending power
+            drawChart('queryResults',"SELECT  R,S,W",avgScoreInComparisonHandler1);
+            drawChart('queryResults',"SELECT  R,U,Y",avgScoreInComparisonHandler2);
+
+            
+        } // end of drawCharts
+
+        // logging error 
+        function checkError(response)
+        {
+            if(response.isError())
+            {
+                console.log('Error in quere:' + response.getMessage());
+                }
+        }
+        /* 
+        This is the draw chart function that capture the query and the sheet name of the online excel file and execute the query to pass the result to response handler which will 
+        draw the chart
+        */
+        function drawChart(sheetName, query, responseHandler) {
+            var queryString = encodeURIComponent(query);
+            var query = new google.visualization.Query(
+                'https://docs.google.com/spreadsheets/d/1cV3eel1FB1uuliZBSSLa4sNJRggdejBdPoeAjD3QKxg/gviz/tq?sheet='
+                        + sheetName + '&headers=1&tq=' + queryString); //Query
+            query.send(responseHandler);
+        } 
+
+        function keyTournmentScoreHandler(response) {
+            var data = response.getDataTable();
+            var chart = new google.visualization.LineChart(document.getElementById('line_chart_tournment'));
+            var options = {
+            chartArea: {width:'50%'},
+            curveType: 'function',
+            hAxis:{format:'####'}
+            //legend: { position: 'left' }
+               };
+            chart.draw(data, options);
+        } //keyTournmentScoreHandler
+
+        
+          // this function is to draw the line chart to visualize a comparison between home game scores of latam and EU teams
+          function avgScoreComparisonHandler1(response) {
+            var data = response.getDataTable();
+            var chart = new google.visualization.LineChart(document.getElementById('line_chart1'));
+            var options = {
+            chartArea: {width:'70%'},
+            curveType: 'function',
+            hAxis:{format:'####'}
+               };
+            chart.draw(data, options);
+        } //avgScoreComparisonHandler
+
+          // this function is to draw the line chart to visualize a comparison between away game scores of latam and EU teams
+        function avgScoreComparisonHandler2(response) {
+            var data = response.getDataTable();
+            var chart = new google.visualization.LineChart(document.getElementById('line_chart2'));
+            var options = {
+            chartArea: {width:'70%'},
+            curveType: 'function',
+            hAxis:{format:'####'}
+               };
+            chart.draw(data, options);
+        } //avgScoreComparisonHandler
+
+          // this function is to draw the line chart to visualize a comparison between home game scores of latam and EU teams
+        function avgScoreInComparisonHandler1(response) {
+            var data = response.getDataTable();
+            var chart = new google.visualization.LineChart(document.getElementById('line_chart3'));
+            var options = {
+            chartArea: {width:'70%'},
+            curveType: 'function',
+            hAxis:{format:'####'}
+               };
+            chart.draw(data, options);
+        } //avgScoreComparisonHandler
+
+          // this function is to draw the line chart to visualize a comparison between away game scores of latam and EU teams
+        function avgScoreInComparisonHandler2(response) {
+            var data = response.getDataTable();
+            var chart = new google.visualization.LineChart(document.getElementById('line_chart4'));
+            var options = {
+            chartArea: {width:'70%'},
+            curveType: 'function',
+            hAxis:{format:'####'}            
+               };
+            chart.draw(data, options);
+        } //avgScoreComparisonHandler
+
+
+        
+
+  </script>
+
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading"> <b>Menu</b> </div>
+      <div class="list-group list-group-flush">
+        <a href="index.html" class="list-group-item list-group-item-action bg-light">Home</a>
+        <a href="intro.html" class="list-group-item list-group-item-action bg-light">Game facts</a>
+        <a href="history.html" class="list-group-item list-group-item-action bg-light">History of the game</a>
+        <a href="analysis.html" class="list-group-item list-group-item-primary">Regional analysis </a>
+        <a href="compare.html" class="list-group-item list-group-item-action bg-light">Team comparison </a>
+        <a href="conclusion.html" class="list-group-item list-group-item-action bg-light">Conclusion</a>
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="container-fluid">
+        <br>
+        <br>
+        <p style="text-align: center; margin-left: auto; margin-right: auto;" class="col-md-12" > The first FIFA world cup was on 1930 and the tournement takes place every 4 years, the tournement was suspended during the seond world
+            war and was resumed in 1950. Through the 21 world cups that took place from 1930 till 2018, the following six countries were domintating the firt places which 
+            maintained the leadership of world soccer between South America and Europe.</p>
+
+        <div class="row" id="panel">
+            <section class="col-sm-6 col-md-4 col-lg-2">
+              <img class="icon" src="images/brazil-flag-small.png" alt="Icon" width="65" length="65">
+              <h3>Brazil</h3>
+              <p>
+                World Cup Champion: <b style="color: rgb(0, 162, 255);">5</b><br>
+                Runner-up: <b style="color: rgb(0, 162, 255);">2</b><br>
+                Third place: <b style="color: rgb(0, 162, 255);">2</b><br>
+                Fourth place: <b style="color: rgb(0, 162, 255);">2</b><br>
+              </br>
+              </p>
+            </section>
+        
+            <section class="col-sm-6 col-md-4 col-lg-2">
+              <img class="icon" src="images/argentina-flag-small.png" alt="Icon" width="65" length="65">
+              <h3>Argentina</h3>
+              <p>
+                World Cup Champion: <b style="color: rgb(0, 162, 255);">2</b><br>
+                Runner-up: <b style="color: rgb(0, 162, 255);">3</b><br>
+                Third place: <b style="color: rgb(0, 162, 255);">0</b><br>
+                Fourth place: <b style="color: rgb(0, 162, 255);">0</b><br>
+              </br>
+              </p>
+            </section>
+            
+            <div class="clearfix visible-sm-block"></div>
+            
+            <section class="col-sm-6 col-md-4 col-lg-2">
+              <img class="icon" src="images/uruguay-flag-small.png" alt="Icon" width="65" length="65">
+              <h3>Uruguay</h3>
+              <p>
+                World Cup Champion: <b style="color: rgb(0, 162, 255);">2</b><br>
+                Runner-up: <b style="color: rgb(0, 162, 255);">0</b><br>
+                Third place: <b style="color: rgb(0, 162, 255);">0</b><br>
+                Fourth place: <b style="color: rgb(0, 162, 255);">4</b><br>
+              </br>
+              </p>
+            </section>
+        
+        
+            <section class="col-sm-6 col-md-4 col-lg-2">
+              <img class="icon" src="images/germany-flag-small.png" alt="Icon" width="65" length="65">
+              <h3>Germany</h3>
+              <p>
+                World Cup Champion: <b style="color: rgb(0, 162, 255);">4</b><br>
+                Runner-up: <b style="color: rgb(0, 162, 255);">4</b><br>
+                Third place: <b style="color: rgb(0, 162, 255);">4</b><br>
+                Fourth place: <b style="color: rgb(0, 162, 255);">1</b><br>
+              </br>
+              </p>
+            </section>
+        
+            <section class="col-sm-6 col-md-4 col-lg-2">
+              <img class="icon" src="images/Italy-flag-small.png" alt="Icon" width="65" length="65">
+              <h3>Italy</h3>
+              <p>
+                World Cup Champion: <b style="color: rgb(0, 162, 255);">4</b><br>
+                Runner-up: <b style="color: rgb(0, 162, 255);">2</b><br>
+                Third place: <b style="color: rgb(0, 162, 255);">1</b><br>
+                Fourth place: <b style="color: rgb(0, 162, 255);">1</b><br>
+              </br>
+              </p>
+            </section>
+        
+            <section class="col-sm-6 col-md-4 col-lg-2">
+              <img class="icon" src="images/france-flag-small.png" alt="Icon" width="65" length="65">
+              <h3>France</h3>
+              <p>
+                World Cup Champion: <b style="color: rgb(0, 162, 255);">2</b><br>
+                Runner-up: <b style="color: rgb(0, 162, 255);">1</b><br>
+                Third place: <b style="color: rgb(0, 162, 255);">2</b><br>
+                Fourth place: <b style="color: rgb(0, 162, 255);">1</b><br>
+              </br>
+              </p>
+            </section>
+        </div>       
+        <p style="text-align: center;margin-left: auto; margin-right: auto; "class="col-md-12" >  Europeans introduced soccer to Latin America but the later adopted their own style which is known for free
+        flowing and more focus on the attack while the European style is more disciplined with less freedom but through the years and with more 
+        Latin American teams started to follow more structured and disciplined approach to enhance their defense. On the other side, European teams started
+        to show more attacking techniques.   </p> 
+
+        <div class="row">
+          <div class="col-md-12">
+                        
+            <br>
+              <br>
+              <br>
+              <table>
+                <tr>
+                  <h5 style="background-color:rgb(229, 238, 243); text-align: center;"> Avg score in key regional tournments in Europe vs Latin Ameirca <br> </h5>
+                </tr>
+            </table>            
+          <br>
+          <table>
+          <tr>
+            <td> 
+              <div class="row"> <h1 style="font-size:1vw"> &emsp; &emsp;</h1> </div>
+            </td>
+            <td>
+                <div id="line_chart_tournment" style="display:block ;margin: auto; width: 900px;">      
+                </div>  
+            </td>
+            <td>
+              <div class="col-md-12">
+                <h1 style="font-size:2vw ; text-align:left; color: rgb(0, 162, 255);"><b><span class="counter4"></span></b></h1>
+                    By comparing the avgerage total goals scored in regional tourntments,Copa America in Latin America and UEFA Cup in Europe, 
+                    we can easily spot that Latin Americas teams with their attacking style scores in average more goals compared to European teams.
+                    <br>
+              </div>
+            </td>
+            <td>
+
+            </td>
+          </tr>
+        </table>
+        <br>
+        <br>
+
+              <table>
+                  <tr>
+                    <h5 style="background-color:rgb(229, 238, 243); text-align: center;"> Attacking performance in international competitions <br> </h5>
+                  </tr>
+              </table>            
+            <br>
+            <table>
+            <tr>
+              <td> 
+                <div class="row"> <h1 style="font-size:1vw"> &emsp; &emsp;</h1> </div>
+              </td>
+              <td>
+                  <div id="line_chart1" style="display:block ;margin: auto; width: 900px;">      
+                  </div>  
+              </td>
+              <td>
+                <div class="col-md-12">
+                      In the international games history, there is no significant difference between the performance of the three key 
+                      Latin American teams and their counterparts in Europe which indicate that Latin American teams in the international 
+                      stage does not score any more compared to European teams in home and away games.
+                      <br>
+                </div>
+              </td>
+              <td>
+
+              </td>
+            </tr>
+          </table>
+          <br>
+          <br>
+           <table>
+              <tr>
+                <td> 
+                  <div class="row"> <h1 style="font-size:1vw"> &emsp; &emsp;</h1> </div>
+                </td>
+                <td>
+                    <div id="line_chart2" style="display:block ;margin: auto; width: 900px; height: 650;">      
+                    </div>  
+                </td>
+                <td>
+                </td>
+                <td>
+
+                </td>
+              </tr>
+            </table>
+            <br>
+            <br>
+            <br>
+            <br>
+            <table>
+                <tr>
+                  <h5 style="background-color:rgb(229, 238, 243); text-align: center;"> Defending performance in international competitions <br> </h5>
+                </tr>
+            </table>   
+            <br>
+            <table>
+                <tr>
+                  <td> 
+                    <div class="row"> <h1 style="font-size:1vw"> &emsp; &emsp;</h1> </div>
+                  </td>
+                  <td>
+                      <div id="line_chart3" style="display:block ;margin: auto; width: 900px; height: 650;">      
+                      </div>  
+                  </td>
+                  <td>
+                    <div class="col-md-12">
+                        With same attacking and scoring power, the next analysis focus on defending to see if European teams receive less goals.
+                        As shown the analysis, both three key teams in Latin America and Europe are having similar defending performance for home and away games.
+                        They both share the same trend of receiving less goals when playing home.
+                          <br>
+                    </div>
+                  </td>
+                  <td>
+  
+                  </td>
+                </tr>
+              </table>
+            <br>
+            <br>
+            <table>
+                <tr>
+                  <td> 
+                    <div class="row"> <h1 style="font-size:1vw"> &emsp; &emsp;</h1> </div>
+                  </td>
+                  <td>
+                      <div id="line_chart4" style="display:block ;margin: auto; width: 900px; height: 650;">      
+                      </div>  
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+  
+                  </td>
+                </tr>
+              </table>
+              <br>
+              <br>
+              <br>
+              <br>
+        </div>
+      </div>      
+
+      </div> <!-- class container-fluid-->
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://d3js.org/d3-timer.v1.min.js"></script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+
+</body>
+
+</html>
